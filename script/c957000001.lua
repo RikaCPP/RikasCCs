@@ -1,5 +1,5 @@
---サクリファイス
---Relinquished
+--Spirit Eater King
+--Script by RikaCPP
 local s,id=GetID()
 function s.initial_effect(c)
 	--Equip
@@ -96,7 +96,7 @@ function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_EQUIP,g,1,0,0)
 end
 
-
+--[[
 function s.equipop(c,e,tp,tc)
 	if not c:EquipByEffectAndLimitRegister(e,tp,tc,id) then return end
 	--substitute
@@ -107,7 +107,7 @@ function s.equipop(c,e,tp,tc)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	e1:SetValue(s.repval)
 	tc:RegisterEffect(e1)
-end
+end]]--
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
