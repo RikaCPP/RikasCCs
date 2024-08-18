@@ -34,7 +34,6 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_FREE_CHAIN)
 	e3:SetCountLimit(1,id)
 	e3:SetRange(LOCATION_HAND)
-	e3:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e3:SetCost(s.cost)
 	e3:SetTarget(s.target)
 	e3:SetOperation(s.activate)
@@ -85,12 +84,12 @@ end
 
 --e3----------------------------------------------------------------------------------e3
 function s.costfilter1(c)
-	return c:IsMonster() and c:IsRace(RACE_FIEND) and c:IsLevelAbove(2) and c:IsAbleToRemoveAsCost() and c:GetCode()~=id
+	return c:IsMonster() and c:IsRace(RACE_FIEND) and c:IsLevelAbove(3) and c:IsAbleToRemoveAsCost() and c:GetCode()~=id
 		and (c:IsLocation(LOCATION_HAND) or aux.SpElimFilter(c,true) )
 end
 
 function s.filter(c,e,tp)
-	return c:IsSetCard(0xAAA)and c:IsLevelAbove(4) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+	return c:IsSetCard(0xAAA)and c:IsLevelAbove(5) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
