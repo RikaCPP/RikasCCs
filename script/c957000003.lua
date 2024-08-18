@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target1)
 	e1:SetOperation(s.operation1)
 	c:RegisterEffect(e1)
-	--ATK down
+	--ATK Up
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -27,16 +27,16 @@ function s.initial_effect(c)
 	e2:SetCost(s.cost)
 	e2:SetOperation(s.aop)
 	c:RegisterEffect(e2)
-	--To Top
+	--Special from Deck
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetCode(EVENT_FREE_CHAIN)
 	e3:SetCountLimit(1,id)
 	e3:SetRange(LOCATION_HAND)
-	e3:SetCost(s.cost)
-	e3:SetTarget(s.target)
-	e3:SetOperation(s.activate)
+	e3:SetCost(s.cost3)
+	e3:SetTarget(s.target3)
+	e3:SetOperation(s.activate3)
 	c:RegisterEffect(e3)
 end
 --e1----------------------------------------------------------------------------------e1
@@ -78,7 +78,11 @@ function s.aop(e,tp,eg,ep,ev,re,r,rp,chk)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	e1:SetValue(800)
-	a:RegisterEffect(e1)
+	if a:GetControler()==tp then
+		a:RegisterEffect(e1)
+	else
+		d:RegisterEffect(e1)
+	end
 	
 end
 
@@ -92,7 +96,7 @@ function s.filter(c,e,tp)
 	return c:IsSetCard(0xAAA)and c:IsLevelAbove(5) and c:IsMonster() and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.cost3(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,nil,e,tp)
 	local tc=nil
 	if #g==1 and g:GetFirst():IsLocation(LOCATION_HAND) then tc=g:GetFirst() end
@@ -105,12 +109,12 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	g1:Merge(g2)
 	Duel.Remove(g1,POS_FACEUP,REASON_COST)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.target3(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK+LOCATION_HAND)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
+function s.activate3(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,e,tp)
