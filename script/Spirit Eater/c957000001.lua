@@ -99,24 +99,14 @@ end
 
 function s.equipop(c,e,tp,tc)
 	if not c:EquipByEffectAndLimitRegister(e,tp,tc,id) then return end
-	--substitute
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_EQUIP)
-	e1:SetCode(EFFECT_DESTROY_SUBSTITUTE)
-	e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_IGNORE_IMMUNE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-	e1:SetValue(s.repval)
-	tc:RegisterEffect(e1)
 end
+
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and tc:IsMonster() and tc:IsControler(1-tp) and s.eqcon(e,tp,eg,ep,ev,re,r,rp) then
 		s.equipop(c,e,tp,tc)
 	end
-end
-function s.repval(e,re,r,rp)
-	return r&REASON_BATTLE~=0
 end
 
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
